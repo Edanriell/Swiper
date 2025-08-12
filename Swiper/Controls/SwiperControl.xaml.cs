@@ -85,4 +85,11 @@ public partial class SwiperControl : ContentView
         likeStackLayout.Opacity = opacity;
         denyStackLayout.Opacity = -opacity;
     }
+
+    private bool CheckForExitCriteria()
+    {
+        var halfScreenWidth = _screenWidth / 2;
+        var decisionBreakpoint = DeadZone * halfScreenWidth;
+        return Math.Abs(photo.TranslationX) > decisionBreakpoint;
+    }
 }
