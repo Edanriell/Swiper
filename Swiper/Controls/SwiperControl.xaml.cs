@@ -4,6 +4,8 @@ namespace Swiper.Controls;
 
 public partial class SwiperControl : ContentView
 {
+    private const double DeadZone = 0.4d;
+    private const double DecisionThreshold = 0.4d;
     private static readonly Random random = new();
     private readonly double _initialRotation;
     private double _screenWidth = -1;
@@ -49,7 +51,9 @@ public partial class SwiperControl : ContentView
     {
         photo.TranslationX = e.TotalX;
         photo.TranslationY = e.TotalY;
-        photo.Rotation = _initialRotation + photo.TranslationX / 25''
+        photo.Rotation = _initialRotation + photo.TranslationX / 25;
+
+        CalculatePanState(e.TotalX);
     }
 
     private void PanCompleted()
@@ -64,5 +68,21 @@ public partial class SwiperControl : ContentView
         base.OnSizeAllocated(width, height);
         if (Application.Current.MainPage == null) return;
         _screenWidth = Application.Current.MainPage.Width;
+    }
+
+    private void CalculatePanState(double panX)
+    {
+        var halfScreenWidth = _screenWidth / 2;
+        var deadZoneEnd = DeadZone * halfScreenWidth;
+        if (Math.Abs(panX) < deadZoneEnd) return;
+        var passedDeadzone = panX < 0
+            ? panX + deadZoneEnd
+            : panX -
+            deadZoneEnd;
+        var decisionZoneEnd = DecisionThreshold * halfScreenWidth;
+        var opacity = passedDeadzone / decisionZoneEnd;
+        opacity = double.Clamp(opacity, -1, 1);
+        likeStackLayout.Opacity = opacity;
+        denyStackLayout.Opacity = -opacity;
     }
 }
