@@ -29,6 +29,9 @@ public partial class SwiperControl : ContentView
         loadingLabel.BindingContext = image;
     }
 
+    public event EventHandler OnLike;
+    public event EventHandler OnDeny;
+
     private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
     {
         switch (e.StatusType)
@@ -103,6 +106,11 @@ public partial class SwiperControl : ContentView
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             var direction = photo.TranslationX < 0 ? -1 : 1;
+
+            if (direction > 0) OnLike?.Invoke(this, new EventArgs());
+
+            if (direction < 0) OnDeny?.Invoke(this, new EventArgs());
+
             await photo.TranslateTo(photo.TranslationX + _screenWidth * direction, photo.TranslationY, 200,
                 Easing.CubicIn);
             var parent = Parent as Layout;
