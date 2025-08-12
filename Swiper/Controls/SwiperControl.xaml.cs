@@ -6,6 +6,7 @@ public partial class SwiperControl : ContentView
 {
     private static readonly Random random = new();
     private readonly double _initialRotation;
+    private double _screenWidth = -1;
 
     public SwiperControl()
     {
@@ -56,5 +57,12 @@ public partial class SwiperControl : ContentView
         photo.TranslateTo(0, 0, 250, Easing.SpringOut);
         photo.RotateTo(_initialRotation, 250, Easing.SpringOut);
         photo.ScaleTo(1);
+    }
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        if (Application.Current.MainPage == null) return;
+        _screenWidth = Application.Current.MainPage.Width;
     }
 }
