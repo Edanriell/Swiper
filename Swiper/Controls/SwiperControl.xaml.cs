@@ -6,9 +6,9 @@ public partial class SwiperControl : ContentView
 {
     private const double DeadZone = 0.4d;
     private const double DecisionThreshold = 0.4d;
+
     private static readonly Random _random = new();
     private readonly double _initialRotation;
-
     private double _screenWidth = -1;
 
     public SwiperControl()
@@ -19,8 +19,19 @@ public partial class SwiperControl : ContentView
         descriptionLabel.Text = picture.Description;
         image.Source = new UriImageSource { Uri = picture.Uri };
 
-        loadingLabel.SetBinding(IsVisibleProperty, "IsLoading");
-        loadingLabel.BindingContext = image;
+        // Show loading initially
+        loadingOverlay.IsVisible = true;
+        loadingIndicator.IsRunning = true;
+
+        // Hide loading when image loads
+        image.PropertyChanged += (sender, e) =>
+        {
+            if (e.PropertyName == nameof(Image.IsLoading))
+            {
+                loadingOverlay.IsVisible = image.IsLoading;
+                loadingIndicator.IsRunning = image.IsLoading;
+            }
+        };
 
         var panGesture = new PanGestureRecognizer();
         panGesture.PanUpdated += OnPanUpdated;
@@ -50,9 +61,9 @@ public partial class SwiperControl : ContentView
 
         if (Math.Abs(panX) < deadZoneEnd) return;
 
-        var passedDeadzone = panX < 0 ? panX + deadZoneEnd : panX - deadZoneEnd;
+        var passedDeadZone = panX < 0 ? panX + deadZoneEnd : panX - deadZoneEnd;
         var decisionZoneEnd = DecisionThreshold * halfScreenWidth;
-        var opacity = passedDeadzone / decisionZoneEnd;
+        var opacity = passedDeadZone / decisionZoneEnd;
 
         opacity = double.Clamp(opacity, -1d, 1d);
 
