@@ -21,6 +21,7 @@ public partial class MainPage : ContentPage
     private void InsertPhoto()
     {
         var photo = new SwiperControl();
+
         photo.OnDeny += Handle_OnDeny;
         photo.OnLike += Handle_OnLike;
 
@@ -36,6 +37,7 @@ public partial class MainPage : ContentPage
     private void Handle_OnLike(object sender, EventArgs e)
     {
         _likeCount++;
+
         InsertPhoto();
         UpdateGui();
     }
@@ -43,6 +45,7 @@ public partial class MainPage : ContentPage
     private void Handle_OnDeny(object sender, EventArgs e)
     {
         _denyCount++;
+
         InsertPhoto();
         UpdateGui();
     }
