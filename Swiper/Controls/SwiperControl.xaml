@@ -5,41 +5,112 @@
              x:Class="Swiper.Controls.SwiperControl">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="60" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="60" />
         </Grid.ColumnDefinitions>
-
-        <!-- ContentView for photo here -->
-        <ContentView x:Name="photo" Padding="40" Grid.ColumnSpan="3">
-            <Grid x:Name="photoGrid" BackgroundColor="Black" Padding="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="40" />
-                </Grid.RowDefinitions>
-
-                <BoxView Grid.RowSpan="2" Color="White" />
-
-                <Image x:Name="image" Margin="10" BackgroundColor="#AAAAAA" Aspect="AspectFill" />
-
-                <Label x:Name="loadingLabel" Text="Loading..." TextColor="White" FontSize="Large" FontAttributes="Bold"
-                       HorizontalOptions="Center" VerticalOptions="Center" />
-
-                <Label Grid.Row="1" x:Name="descriptionLabel" Margin="10,0" Text="A picture of grandpa"
-                       FontFamily="Bradley Hand" />
-            </Grid>
+        <!-- Image card -->
+        <ContentView x:Name="photo" Padding="0" Grid.ColumnSpan="3">
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="Black" Opacity="0.2" Radius="10" Offset="0,2" />
+                </Border.Shadow>
+                <Grid x:Name="photoGrid">
+                    <!-- Image container -->
+                    <Border StrokeThickness="0"
+                            BackgroundColor="Transparent">
+                        <Image x:Name="image"
+                               BackgroundColor="Transparent"
+                               Aspect="Fill" />
+                    </Border>
+                    <!-- Description overlay -->
+                    <Grid VerticalOptions="End"
+                          HorizontalOptions="Center"
+                          Margin="20,0,20,20">
+                        <Border BackgroundColor="#80000000"
+                                StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="24" />
+                            </Border.StrokeShape>
+                            <Label x:Name="descriptionLabel"
+                                   Text="A picture of grandpa"
+                                   FontSize="16"
+                                   TextColor="White"
+                                   FontFamily="Default"
+                                   LineBreakMode="TailTruncation"
+                                   Padding="20,12"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center" />
+                        </Border>
+                    </Grid>
+                    <!-- Loading overlay -->
+                    <Border x:Name="loadingOverlay"
+                            BackgroundColor="#80000000"
+                            StrokeThickness="0"
+                            Padding="30"
+                            IsVisible="False">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="24" />
+                        </Border.StrokeShape>
+                        <StackLayout VerticalOptions="Center"
+                                     HorizontalOptions="Center"
+                                     Spacing="20">
+                            <ActivityIndicator x:Name="loadingIndicator"
+                                               IsRunning="True"
+                                               Color="White" />
+                            <Label x:Name="loadingLabel"
+                                   Text="Loading..."
+                                   TextColor="White"
+                                   FontSize="14"
+                                   FontAttributes="None"
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Border>
+                </Grid>
+            </Border>
         </ContentView>
-
-        <!-- StackLayout for like here -->
-        <StackLayout x:Name="likeStackLayout" Grid.Column="2" Opacity="0" Padding="0, 100" HorizontalOptions="Center">
-            <Label Text="LIKE" TextColor="Lime" FontSize="30" Rotation="30" FontAttributes="Bold" />
-        </StackLayout>
-
-        <!-- StackLayout for deny here -->
-        <StackLayout x:Name="denyStackLayout" Opacity="0" Padding="0, 100" HorizontalOptions="Center">
-            <Label Text="DENY" TextColor="Red" FontSize="30" Rotation="-20" FontAttributes="Bold" />
-        </StackLayout>
-
+        <!-- Like -->
+        <Grid x:Name="likeStackLayout"
+              Grid.Column="2"
+              Opacity="0"
+              VerticalOptions="Center"
+              HorizontalOptions="Center"
+              Margin="0,0,10,0"
+              WidthRequest="60"
+              HeightRequest="60">
+            <Ellipse Fill="#4CAF50"
+                     WidthRequest="60"
+                     HeightRequest="60" />
+            <Label Text="♥"
+                   TextColor="White"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
+        <!-- Deny -->
+        <Grid x:Name="denyStackLayout"
+              Grid.Column="0"
+              Opacity="0"
+              VerticalOptions="Center"
+              HorizontalOptions="Center"
+              Margin="10,0,0,0"
+              WidthRequest="60"
+              HeightRequest="60">
+            <Ellipse Fill="#F44336"
+                     WidthRequest="60"
+                     HeightRequest="60" />
+            <Label Text="✕"
+                   TextColor="White"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
     </Grid>
-
 </ContentView>
